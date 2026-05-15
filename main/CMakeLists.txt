@@ -1,0 +1,23 @@
+idf_component_register(
+    SRCS
+        "app_main.cc"
+        "audio_capture.cc"
+        "board_io.cc"
+        "comm_mode.cc"
+        "dreame_protocol.cc"
+        "license_console.cc"
+        "rs485_protocol.cc"
+        "snore_engine.cc"
+    INCLUDE_DIRS "."
+    PRIV_REQUIRES
+        driver
+        es8311
+        esp_driver_gpio
+        esp_driver_i2c
+        esp_driver_i2s
+        esp_driver_uart
+        esp_timer
+        esp_psram
+        nvs_flash
+        sb03_snore_prebuilt
+)

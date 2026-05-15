@@ -1,0 +1,22 @@
+menu "SB03 Snore Detector"
+
+    config SB03_MIC_GAIN
+        int "ES8311 microphone gain"
+        range 0 7
+        default 6
+        help
+            ES8311 microphone gain enum value: 0=0dB, 1=6dB, ... 7=42dB.
+
+    config SB03_CODEC_VOLUME
+        int "ES8311 voice volume"
+        range 0 100
+        default 60
+
+    config SB03_TFLM_ARENA_KB
+        int "Tensor arena size in KB"
+        range 512 8192
+        default 4096
+        help
+            Increase if AllocateTensors fails. Full float YAMNet can need a large arena.
+
+endmenu
