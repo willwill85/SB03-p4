@@ -4,7 +4,7 @@ This example is the customer-facing ESP32-P4 project. It contains board I/O,
 audio capture, NVS mode selection, license console, Dreame logging, TTL output,
 and RS485 protocol glue.
 
-It intentionally does not contain model files, YAMNet code, TensorFlow Lite
+It intentionally does not contain model files, model code, TensorFlow Lite
 Micro resolver code, or snore post-processing implementation. The only snore
 algorithm dependency is:
 

@@ -59,6 +59,14 @@ static void format_top_scores(const sb03_snore_result_t *result, char *buf, size
     }
 }
 
+static uint32_t trial_remaining(const sb03_snore_result_t *result)
+{
+    if (result->licensed || result->trial_count >= result->trial_limit) {
+        return 0;
+    }
+    return result->trial_limit - result->trial_count;
+}
+
 void snore_engine_task(void *arg)
 {
     QueueHandle_t audio_queue = (QueueHandle_t)arg;
@@ -79,7 +87,11 @@ void snore_engine_task(void *arg)
             detection_state_set(&zero_state);
             board_io_set(SB03_IO_AI, true);
             board_io_set(SB03_IO_TTL_SNORE, false);
-            ESP_LOGW(TAG, "snore library infer failed: status=%d", status);
+            ESP_LOGW(TAG, "snore library infer failed: status=%d licensed=%d trial=%lu/%lu remaining=%lu",
+                     status, result.licensed ? 1 : 0,
+                     (unsigned long)result.trial_count,
+                     (unsigned long)result.trial_limit,
+                     (unsigned long)trial_remaining(&result));
             heap_caps_free(frame);
             vTaskDelay(pdMS_TO_TICKS(20));
             continue;
@@ -101,12 +113,13 @@ void snore_engine_task(void *arg)
         char top_summary[128] = {};
         format_top_scores(&result, top_summary, sizeof(top_summary));
         ESP_LOGI(TAG,
-                 "sn=%.4f raw=%.4f sig=%d cnt=%d iferr=%d out=%d std=%.4f vol=%.4f infer=%dms licensed=%d trial=%lu/%lu",
+                 "sn=%.4f raw=%.4f sig=%d cnt=%d iferr=%d out=%d std=%.4f vol=%.4f infer=%dms licensed=%d trial=%lu/%lu remaining=%lu",
                  result.snore_prob, result.snore_prob_raw, result.snoresig,
                  result.snore_count, result.iferr_count, result.output_p,
                  result.audio_std, result.audio_volume, result.infer_ms,
                  result.licensed ? 1 : 0, (unsigned long)result.trial_count,
-                 (unsigned long)result.trial_limit);
+                 (unsigned long)result.trial_limit,
+                 (unsigned long)trial_remaining(&result));
         ESP_LOGI(TAG, "audio peak=%.4f rms=%.4f top=[%s]",
                  result.audio_peak, result.audio_rms, top_summary);
 

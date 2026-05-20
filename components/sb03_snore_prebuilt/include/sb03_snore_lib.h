@@ -60,7 +60,7 @@ typedef struct {
 sb03_snore_status_t sb03_snore_verify_license(const char *license);
 
 /*
- * Run one 16 kHz, 1 second mono PCM frame through the embedded YAMNet snore
+ * Run one 16 kHz, 1 second mono PCM frame through the embedded model snore
  * detector. Without a valid license, the library returns real results for the
  * first SB03_SNORE_TRIAL_LIMIT successful inferences, then returns
  * SB03_SNORE_ERR_TRIAL_EXPIRED and zeroes out the result.

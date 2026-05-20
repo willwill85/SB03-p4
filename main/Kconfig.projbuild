@@ -17,6 +17,6 @@ menu "SB03 Snore Detector"
         range 512 8192
         default 4096
         help
-            Increase if AllocateTensors fails. Full float YAMNet can need a large arena.
+            Increase if AllocateTensors fails. Full float model can need a large arena.
 
 endmenu
